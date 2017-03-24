@@ -13,6 +13,7 @@ class Guitar{
 		string material_s; //материал струн
 		string mfr_guitar; //изготовитель гитары
 		string type_guitar; //тип гитары
+		//static string model_amp; //модель усилителя
 	public:
 		bool getAmplifier(){ //возвращает положение усилителя (0 или 1)
 			return amplifier;
@@ -35,17 +36,18 @@ class Guitar{
 		}
 		void plug_amplifier(bool amplifier){ //подключить усилитель
 			if(amplifier==false){ //если усилитель подключён ...
-				cout<<"Do you want to connect an amplifier? (yes or no)"<<endl;
+				cout<<"   Do you want to connect an amplifier (yes or no)?"<<endl<<"   ";
 				string answer;
+				cin.ignore();
 				while((answer!="yes") && (answer!="no")){ //пока ответ не будет "да" или "нет"
 				    getline(cin, answer);
-					if((answer!="yes") && (answer!="no")) cout<<"Error! Answer the question (yes or no)!"<<endl; //если ответ не "да" и не "нет" ...
+					if((answer!="yes") && (answer!="no")) cout<<"   Error! Answer the question (yes or no)!"<<endl<<"   "; //если ответ не "да" и не "нет" ...
 				}
 				if(answer=="yes"){ //если ответ "да" ...	
 					this->amplifier = true;
 				}
 			}
-			if(this->amplifier==true) cout<<"Amplifier is connected"; else cout<<"Amplifier isn't connected"; //если усилитель подключён ..., иначе ...
+			if(this->amplifier==true) cout<<"   Amplifier is connected."; else cout<<"   Amplifier isn't connected."; //если усилитель подключён ..., иначе ...
 		}
 		Guitar(){ //конструктор по умолчанию
 			material_s = "steel";
@@ -74,7 +76,37 @@ class Guitar{
 			mfr_guitar = object.mfr_guitar; 
 			type_guitar = object.type_guitar;	
 		}
+		bool operator==(const Guitar &object){
+			if(fretboard==object.fretboard && quantity_s==object.quantity_s && mfr_guitar==object.mfr_guitar && type_guitar==object.type_guitar) return 1;
+		 		else return 0;
+		}
+		~Guitar(){
+		}
+		void pull_the_strings(float thickness_s, string material_s){
+			cout<<"   String thickness: "<<thickness_s<<endl<<"   String material: "<<material_s;
+			string answer_one;
+			cout<<endl<<"   Do you want to pull the strings (yes or no)?"<<endl<<"   ";
+			cin.ignore();
+			while((answer_one!="yes") && (answer_one!="no")){
+				getline(cin, answer_one);
+				if((answer_one!="yes") && (answer_one!="no")) cout<<"   Error! Answer the question (yes or no)!"<<endl<<"   ";
+			}
+			if(answer_one=="yes"){
+				
+				
+				
+				
+				
+				
+			}
 			
+			
+			
+		}
+		
+		
+		
+		
 };
 
 
@@ -105,10 +137,23 @@ int main(){
 	cout<<"What do you want to do?"<<endl;
 	cout<<"   1. Connect an amplifier;"<<endl;
 	cout<<"   2. Pull the strings."<<endl<<endl;
-	//cout<<"Type your answer: ";
+	cout<<"Type your answer (1 or 2): ";
+	int num1;
+	while ((!(cin >> num1) || (cin.peek() != '\n')) || (num1!=1 && num1!=2)){ //пока вводится не (число без лишних символов) или это число <> 1 или 2 ...
+		cout<<"Error!!! Enter the correct number (1 or 2): ";
+		cin.clear(); 
+		cin.sync(); 
+	}	
+	if(num1==1) current.plug_amplifier(current.getAmplifier()); 
+		else current.pull_the_strings(current.getThickness(), current.getMaterial()); 
 	
 	
 	
+	
+	
+	/*if(num==1) les_paul = current; //если номер гитары 1, 2 или 3 ...
+		else if(num==2) explorer = current; 
+			else acoustic_1 = current;*/
 	
 	getch();
 	return 0;
