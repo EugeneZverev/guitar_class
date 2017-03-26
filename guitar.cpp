@@ -3,6 +3,8 @@
 
 using namespace std;
 
+class Set_of_strings;
+
 class Guitar{
 	private:
 		float fretboard; //длина мензуры в дюймах
@@ -13,7 +15,6 @@ class Guitar{
 		string mfr_guitar; //изготовитель гитары
 		string type_guitar; //тип гитары
 		static string model_amp; //модель усилителя
-		
 	public:
 		bool getAmplifier(){ //возвращает положение усилителя (0 или 1)
 			return amplifier;
@@ -122,7 +123,7 @@ class Guitar{
 			}
 			cout<<"   String thickness: "<<thickness_s<<endl<<"   String material: "<<material_s;
 		}					
-		void compare_guitars(Guitar &les_paul, Guitar &explorer, Guitar &acoustic_1){
+		void compare_guitars(Guitar &les_paul, Guitar &explorer, Guitar &acoustic_1){ //сравнить 2 гитары
 			cout<<endl<<"Enter the names of the guitars (Les Paul - 1; Explorer - 2; Acoustic - 3)."<<endl;
 			cout<<"Enter the first number: ";
 			int first;
@@ -148,21 +149,47 @@ class Guitar{
 					else g2=acoustic_1;
 			if(g1==g2) cout<<"Guitars have similar characteristics."; else cout<<"Guitars have different characteristics.";	
 		}
-
+		friend string mfr_g(Guitar &obj){ //возвращает значение "изготовитель гитары"
+			return obj.mfr_guitar;
+		}
+		friend Set_of_strings;
 };
 
 string Guitar::model_amp;
+
+class Set_of_strings{
+	private:
+		int quantity;
+		float thickness; 
+		string material;
+	public:
+		Set_of_strings(Guitar &obj){
+			quantity = obj.quantity_s;
+			thickness = obj.thickness_s;
+			material = obj.material_s;
+		}
+		~Set_of_strings(){
+		}
+		void show_set(){
+			cout<<"   Quantity: "<<quantity<<endl;
+			cout<<"   Thickness: "<<thickness<<endl;
+			cout<<"   Material: "<<material<<endl<<endl;
+		}
+};
 
 int main(){
 	Guitar acoustic_1;
 	Guitar les_paul("electric", 24.75, "gibson", false, 6, 0.010, "steel");
 	Guitar explorer(les_paul);
+	Set_of_strings exp(explorer);
+	cout<<"Work of a friend class Set_of_strings by example Explorer!!"<<endl;
+	exp.show_set();
 	cout<<"	Choose a guitar!"<<endl<< "1. Gibson Les Paul - the first electric guitar with a solid body, developed by Les Paul in 1950 - 1952."<<endl;
-	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 22 fret;"<<endl<<"   Fretboard: rosewood;"<<endl<< "   Mensura: 24.75 inches;"<<endl<<"   Fixing the neck: on the bolts."<<endl<<endl;
+	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 22 fret;"<<endl<<"   Fretboard: rosewood;"<<endl<< "   Mensura: 24.75 inches;"<<endl<<"   Fixing the neck: on the bolts;"<<endl<<"   Manufacturer: "<<mfr_g(les_paul)<<"."<<endl<<endl;
 	cout<< "2. Gibson Explorer - six-string electric guitar, original guitar company Gibson is produced in Nashville, USA since 1958."<<endl;
-	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 22 fret;"<<endl<<"   Fretboard: rosewood;"<<endl<< "   Mensura: 24.75 inches;"<<endl<<"   Fixing the neck: pasted."<<endl;
+	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 22 fret;"<<endl<<"   Fretboard: rosewood;"<<endl<< "   Mensura: 24.75 inches;"<<endl<<"   Fixing the neck: pasted;"<<endl<<"   Manufacturer: "<<mfr_g(explorer)<<"."<<endl;
 	cout<<endl<<"3. Acoustic guitar - six-string acoustic guitar, classical body."<<endl;
-	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 20 fret;"<<endl<<"   Fretboard: rosewood Sonokeling;"<<endl<< "   Mensura: 25.5 inches;"<<endl<<"   Lower deck and shells: from Indonesian mahogany."<<endl;
+	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 20 fret;"<<endl<<"   Fretboard: rosewood Sonokeling;"<<endl<< "   Mensura: 25.5 inches;"<<endl<<"   Lower deck and shells: from Indonesian mahogany;"<<endl<<"   Manufacturer: "<<mfr_g(acoustic_1)<<"."<<endl;
 	cout<<endl<<"Enter the guitar number (1,2 or 3): ";
 	int num;
 	while((!(cin >> num) || (cin.peek() != '\n')) || (num!=1 && num!=2 && num!=3)){ //пока вводится не (число без лишних символов) или это число <> 1, 2 или 3 ...
