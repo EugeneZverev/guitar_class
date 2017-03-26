@@ -7,14 +7,15 @@ class Set_of_strings;
 
 class Guitar{
 	private:
-		float fretboard; //длина мензуры в дюймах
 		bool amplifier;	//положение усилителя (1 или 0)
-		int quantity_s; //количество струн
 		float thickness_s; //толщина 1 струны в дюймах
 		string material_s; //материал струн
 		string mfr_guitar; //изготовитель гитары
 		string type_guitar; //тип гитары
 		static string model_amp; //модель усилителя
+	protected:
+		float fretboard; //длина мензуры в дюймах	
+		int quantity_s; //количество струн	
 	public:
 		bool getAmplifier(){ //возвращает положение усилителя (0 или 1)
 			return amplifier;
@@ -177,6 +178,24 @@ class Set_of_strings{
 		}
 };
 
+class Bass_guitar : public Guitar{
+	private:
+		string soundbox; //звукосниматель
+	public: 
+		void description_bass(){
+			cout<<"   Fretboard: "<<fretboard<<endl;
+			cout<<"   Quantity strings: "<<quantity_s<<endl;
+			cout<<"   Soundbox: "<<soundbox<<endl<<endl;
+		}
+		Bass_guitar(){
+			fretboard = 34;
+			quantity_s = 4;
+			soundbox = "Double Coil";
+		}
+		~Bass_guitar(){
+		}
+};
+
 int main(){
 	Guitar acoustic_1;
 	Guitar les_paul("electric", 24.75, "gibson", false, 6, 0.010, "steel");
@@ -184,6 +203,9 @@ int main(){
 	Set_of_strings exp(explorer);
 	cout<<"Work of a friend class Set_of_strings by example Explorer!!"<<endl;
 	exp.show_set();
+	cout<<"C ++ Inheritance by example class Bass_guitar Thunderbird!!"<<endl;
+	Bass_guitar thunderbird;
+	thunderbird.description_bass();
 	cout<<"	Choose a guitar!"<<endl<< "1. Gibson Les Paul - the first electric guitar with a solid body, developed by Les Paul in 1950 - 1952."<<endl;
 	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 22 fret;"<<endl<<"   Fretboard: rosewood;"<<endl<< "   Mensura: 24.75 inches;"<<endl<<"   Fixing the neck: on the bolts;"<<endl<<"   Manufacturer: "<<mfr_g(les_paul)<<"."<<endl<<endl;
 	cout<< "2. Gibson Explorer - six-string electric guitar, original guitar company Gibson is produced in Nashville, USA since 1958."<<endl;
@@ -232,6 +254,4 @@ int main(){
 		}
 		if(num4==1) flag=1; else return 0;	
 	}
-
-	
 }
