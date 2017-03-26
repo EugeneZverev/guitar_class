@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string>
-#include <conio.h>
 
 using namespace std;
 
@@ -14,6 +13,7 @@ class Guitar{
 		string mfr_guitar; //изготовитель гитары
 		string type_guitar; //тип гитары
 		static string model_amp; //модель усилителя
+		
 	public:
 		bool getAmplifier(){ //возвращает положение усилителя (0 или 1)
 			return amplifier;
@@ -33,7 +33,7 @@ class Guitar{
 			cout<<"   String material: "<<material_s<<";"<<endl;	
 			cout<<"   Guitar manufacturer: "<<mfr_guitar<<";"<<endl;	
 			cout<<"   Guitar type: "<<type_guitar<<";"<<endl;	
-			cout<<"   Model amplifier: "<<model_amp<<"."<<endl<<endl;
+			cout<<"   Model amplifier: "<<model_amp<<".";
 		}
 		void plug_amplifier(bool amplifier){ //подключить усилитель
 			if(amplifier==false){ //если усилитель не подключён ...
@@ -122,6 +122,33 @@ class Guitar{
 			}
 			cout<<"   String thickness: "<<thickness_s<<endl<<"   String material: "<<material_s;
 		}					
+		void compare_guitars(Guitar &les_paul, Guitar &explorer, Guitar &acoustic_1){
+			cout<<endl<<"Enter the names of the guitars (Les Paul - 1; Explorer - 2; Acoustic - 3)."<<endl;
+			cout<<"Enter the first number: ";
+			int first;
+			while((!(cin >> first) || (cin.peek() != '\n')) || (first!=1 && first!=2 && first!=3)){ //пока вводится не (число без лишних символов) или это число <> 1, 2 или 3 ...
+				cout<<"Error!!! Enter the correct number (1, 2 or 3): ";
+				cin.clear(); 
+				cin.sync(); 
+			}
+			Guitar g1;
+			if(first==1) g1=les_paul;
+				else if(first==2) g1=explorer;
+					else g1=acoustic_1;
+			cout<<"Enter the second number: ";
+			int second;	
+			while((!(cin >> second) || (cin.peek() != '\n')) || (second!=1 && second!=2 && second!=3) || first==second){ //пока вводится не (число без лишних символов) или это число <> 1, 2 или 3 ...
+				cout<<"Error!!! Enter the correct number (unequal to the first): ";
+				cin.clear(); 
+				cin.sync(); 
+			}
+			Guitar g2;
+			if(second==1) g2=les_paul;
+				else if(second==2) g2=explorer;
+					else g2=acoustic_1;
+			if(g1==g2) cout<<"Guitars have similar characteristics."; else cout<<"Guitars have different characteristics.";	
+		}
+
 };
 
 string Guitar::model_amp;
@@ -148,20 +175,24 @@ int main(){
 		else if(num==2) current = explorer; 
 			else current = acoustic_1;
 	current.show_description();
-	cout<<"What do you want to do?"<<endl;
+	cout<<endl<<endl<<"What do you want to do?"<<endl;
 	int flag = 1; //1 - программа работает, 0 - завершение работы
 	while(flag==1){
 		cout<<"   1. Connect an amplifier;"<<endl;
-		cout<<"   2. Pull the strings."<<endl<<endl;
-		cout<<"Type your answer (1 or 2): ";
+		cout<<"   2. Pull the strings;"<<endl;
+		cout<<"   3. Learn guitar characteristics;"<<endl;
+		cout<<"   4. Compare guitars characteristics."<<endl<<endl;
+		cout<<"Type your answer (1, 2, 3 or 4): ";
 		int num1;
-		while((!(cin >> num1) || (cin.peek() != '\n')) || (num1!=1 && num1!=2)){ //пока вводится не (число без лишних символов) или это число <> 1 или 2 ...
-			cout<<"Error!!! Enter the correct number (1 or 2): ";
+		while((!(cin >> num1) || (cin.peek() != '\n')) || (num1!=1 && num1!=2 && num1!=3 && num1!=4)){ //пока вводится не (число без лишних символов) или это число <> 1, 2, 3 или 4 ...
+			cout<<"Error!!! Enter the correct number (1, 2, 3 or 4): ";
 			cin.clear(); 
 			cin.sync(); 
 		}	
 		if(num1==1) current.plug_amplifier(current.getAmplifier()); 
-			else current.pull_the_strings(current.getThickness(), current.getMaterial()); 
+			else if(num1==2) current.pull_the_strings(current.getThickness(), current.getMaterial()); 
+				else if(num1==3) current.show_description();
+					else current.compare_guitars(les_paul, explorer, acoustic_1);
 		if(num==1) les_paul = current; //если номер гитары 1, 2 или 3 ...
 			else if(num==2) explorer = current; 
 				else acoustic_1 = current;
@@ -174,7 +205,6 @@ int main(){
 		}
 		if(num4==1) flag=1; else return 0;	
 	}
+
 	
-	getch();
-	return 0;
 }
