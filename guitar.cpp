@@ -178,21 +178,133 @@ class Set_of_strings{
 		}
 };
 
-class Bass_guitar : public Guitar{
+class Contrabass{
+	protected:
+		string sound_range[2];
+	Contrabass(){
+		sound_range[0] = "E1";
+		sound_range[1] = "g1";
+	}
+	~Contrabass(){
+	}
+};
+
+class Bass_guitar : public Guitar, public Contrabass{
 	private:
 		string soundbox; //звукосниматель
 	public: 
 		void description_bass(){
 			cout<<"   Fretboard: "<<fretboard<<endl;
 			cout<<"   Quantity strings: "<<quantity_s<<endl;
+			cout<<"   Sound range: "<<sound_range[0]<<"-"<<sound_range[1]<<endl;
 			cout<<"   Soundbox: "<<soundbox<<endl<<endl;
 		}
 		Bass_guitar(){
 			fretboard = 34;
 			quantity_s = 4;
 			soundbox = "Double Coil";
+			sound_range[0] = "E1";
+			sound_range[1] = "g1";
 		}
 		~Bass_guitar(){
+		}
+};
+
+class EffectsUnit{
+	protected:
+		int out_level;
+		int in_resist;
+		int out_resist;
+		float weight;
+		int power_consumption;
+	public:
+		virtual void description() = 0;
+};
+
+class Overdrive : public EffectsUnit{
+	public:
+		void description(){
+			cout<<"   Output level: "<<out_level<<endl;
+			cout<<"   Output impedance: "<<out_resist<<endl;
+			cout<<"   Input impedance: "<<in_resist<<endl;
+			cout<<"   Weight: "<<weight<<endl;
+			cout<<"   Power consumption: "<<power_consumption<<endl;
+		}
+		Overdrive(){
+			out_level = 0;
+			in_resist = 500;
+			out_resist = 10;
+			weight = 0.57;
+			power_consumption = 23;
+		}
+		~Overdrive(){
+		}
+};
+
+class Distortion : public EffectsUnit{
+	public:
+		void description(){
+			cout<<"   Output level: "<<out_level<<endl;
+			cout<<"   Output impedance: "<<out_resist<<endl;
+			cout<<"   Input impedance: "<<in_resist<<endl;
+			cout<<"   Weight: "<<weight<<endl;
+			cout<<"   Power consumption: "<<power_consumption<<endl;
+		}
+		Distortion(){
+			out_level = -20;
+			in_resist = 1000;
+			out_resist = 10;
+			weight = 0.42;
+			power_consumption = 21;
+		}
+		~Distortion(){
+		}
+};
+
+class Equalizer : public EffectsUnit{
+	public:
+		class ParamEqual{
+			private:
+				int op_frequency;
+				int q_factor;
+				int gain_level;
+			public:
+				int n_bands;
+				string type_eq;
+			ParamEqual(){
+				n_bands = 3;
+				type_eq = "parametric";
+			}
+			~ParamEqual(){
+			}
+		};
+		ParamEqual eq1;
+		int num_bands;
+		string type_equal;
+		void description(){
+			cout<<"   Equalizer - radioelectronic device and effects unit, allowing to selectively correct the signal amplitude depending on the frequency characteristics."<<endl;
+			cout<<"   Number of bands: "<<num_bands<<endl;
+			cout<<"   Equalizer type: "<<type_equal<<endl;
+			class GraphEqual{
+				public:
+					string type_GEQ;
+					GraphEqual(){
+						type_GEQ = "graphic";
+					}
+					~GraphEqual(){
+					}
+					string getType(){
+						return type_GEQ;
+					}
+			};
+			GraphEqual geq1;
+			cout<<"   Another equalizer type: "<<geq1.getType()<<endl<<endl;
+		}
+		Equalizer(){
+			num_bands = eq1.n_bands;
+			type_equal = eq1.type_eq;
+		}
+		~Equalizer(){
 		}
 };
 
@@ -205,7 +317,18 @@ int main(){
 	exp.show_set();
 	cout<<"C ++ Inheritance by example class Bass_guitar Thunderbird!!"<<endl;
 	Bass_guitar thunderbird;
-	thunderbird.description_bass();
+	thunderbird.description_bass();	
+	Distortion dist;
+	Overdrive over;
+	Equalizer equal;
+	cout<<"Virtual function and abstract class EffectsUnit in C++:"<<endl<<endl;
+	cout<<"Overdrive description!!!"<<endl;
+	over.description();
+	cout<<endl<<"Distortion description!!!"<<endl;
+	dist.description();
+	cout<<endl<<"Nested class in C++:"<<endl;
+	cout<<endl<<"Equalizer description!!!"<<endl;	
+	equal.description();
 	cout<<"	Choose a guitar!"<<endl<< "1. Gibson Les Paul - the first electric guitar with a solid body, developed by Les Paul in 1950 - 1952."<<endl;
 	cout<<"   Case: mahogany;"<<endl<<"   Neck: mahogany, 22 fret;"<<endl<<"   Fretboard: rosewood;"<<endl<< "   Mensura: 24.75 inches;"<<endl<<"   Fixing the neck: on the bolts;"<<endl<<"   Manufacturer: "<<mfr_g(les_paul)<<"."<<endl<<endl;
 	cout<< "2. Gibson Explorer - six-string electric guitar, original guitar company Gibson is produced in Nashville, USA since 1958."<<endl;
